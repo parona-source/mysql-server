@@ -1942,7 +1942,9 @@ IF(EDITLINE_WARN_GIVEN)
 ENDIF()
 
 # Add libevent
-MYSQL_CHECK_LIBEVENT()
+IF(NOT WITHOUT_SERVER)
+    MYSQL_CHECK_LIBEVENT()
+ENDIF()
 UNSET(LIBEVENT_WARN_GIVEN)
 WARN_MISSING_SYSTEM_LIBEVENT(LIBEVENT_WARN_GIVEN)
 IF(LIBEVENT_WARN_GIVEN)
@@ -2361,6 +2363,7 @@ ENDIF()
 # scripts/mysql_config depends on client and server targets loaded above.
 # It is referenced by some of the directories below, so we insert it here.
 ADD_SUBDIRECTORY(scripts)
+ADD_SUBDIRECTORY(support-files)
 
 IF(NOT WITHOUT_SERVER)
   ADD_SUBDIRECTORY(mysql-test)
