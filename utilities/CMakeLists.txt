@@ -121,6 +121,19 @@ MYSQL_ADD_EXECUTABLE(static_thread_local_test
   EXCLUDE_FROM_ALL
   )
 
+IF(WITHOUT_CLIENTLIBS)
+MYSQL_ADD_EXECUTABLE(my_print_defaults
+  my_print_defaults.cc
+  COMPONENT Server
+  LINK_LIBRARIES mysys
+  SKIP_INSTALL )
+MYSQL_ADD_EXECUTABLE(perror
+  perror.cc
+  COMPONENT Server
+  DEPENDENCIES GenError
+  LINK_LIBRARIES mysys
+  SKIP_INSTALL )
+ELSE(WITHOUT_CLIENTLIBS)
 MYSQL_ADD_EXECUTABLE(my_print_defaults
   my_print_defaults.cc
   COMPONENT Server
@@ -132,6 +145,7 @@ MYSQL_ADD_EXECUTABLE(perror
   DEPENDENCIES GenError
   LINK_LIBRARIES mysys
   )
+ENDIF(WITHOUT_CLIENTLIBS)
 
 # All targets below belong to COMPONENT Server and depend on InnoDB.
 IF(WITHOUT_SERVER)

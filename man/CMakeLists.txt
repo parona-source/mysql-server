@@ -26,7 +26,6 @@ SET(MAN1
   comp_err.1
   ibd2sdi.1
   innochecksum.1
-  my_print_defaults.1
   myisam_ftdump.1
   myisamchk.1
   myisamlog.1
@@ -45,7 +44,6 @@ SET(MAN1
   mysqlman.1
   mysqlshow.1
   mysqlslap.1
-  perror.1
   )
 
 IF(NOT WITH_SYSTEMD)
