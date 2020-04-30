@@ -289,23 +289,32 @@ IF(WIN32)
   LIST(APPEND LIBS_TO_MERGE auth_win_client)
 ENDIF()
 
-# LDAP authentication SASL client plug-in
-ADD_SUBDIRECTORY(authentication_ldap)
+IF(WITHOUT_CLIENTLIBS)
+  # Merge several convenience libraries into one big mysqlclient
+  MERGE_CONVENIENCE_LIBRARIES(mysqlclient ${LIBS_TO_MERGE}
+    COMPONENT Development
+    LINK_LIBRARIES ${LIBS_TO_LINK}
+    SKIP_INSTALL
+    )
+ELSE(WITHOUT_CLIENTLIBS)
+  # LDAP authentication SASL client plug-in
+  ADD_SUBDIRECTORY(authentication_ldap)
 
-# authentication kerberos client plug-in
-ADD_SUBDIRECTORY(authentication_kerberos)
+  # authentication kerberos client plug-in
+  ADD_SUBDIRECTORY(authentication_kerberos)
 
-# authentication IAM client plug-in
-ADD_SUBDIRECTORY(authentication_oci_client)
+  # authentication IAM client plug-in
+  ADD_SUBDIRECTORY(authentication_oci_client)
 
-# Fido and Webauthn clients
-ADD_SUBDIRECTORY(fido_client)
+  # Fido and Webauthn clients
+  ADD_SUBDIRECTORY(fido_client)
 
-# Merge several convenience libraries into one big mysqlclient
-MERGE_CONVENIENCE_LIBRARIES(mysqlclient ${LIBS_TO_MERGE}
-  COMPONENT Development
-  LINK_LIBRARIES ${LIBS_TO_LINK}
-  )
+  # Merge several convenience libraries into one big mysqlclient
+  MERGE_CONVENIENCE_LIBRARIES(mysqlclient ${LIBS_TO_MERGE}
+    COMPONENT Development
+    LINK_LIBRARIES ${LIBS_TO_LINK}
+    )
+ENDIF(WITHOUT_CLIENTLIBS)
 
 # Visual Studio users need debug  static library for debug projects
 IF(MSVC)
@@ -352,17 +361,32 @@ ENDIF()
 
 # Merge several convenience libraries into one big mysqlclient
 # and link them together into shared library.
-MERGE_LIBRARIES_SHARED(libmysql ${LIBS_TO_MERGE}
-  EXPORTS
-  ${CLIENT_API_FUNCTIONS}
-  ${CLIENT_API_FUNCTIONS_UNDOCUMENTED}
-  ${CLIENT_API_NONBLOCKING_FUNCTIONS}
-  COMPONENT SharedLibraries
-  LINK_LIBRARIES ${LIBS_TO_LINK}
-  ${UNIX_OUTPUT_NAME}
-  ${UNIX_SOVERSION}
-  ${UNIX_VERSION}
-  )
+IF(WITHOUT_CLIENTLIBS)
+  MERGE_LIBRARIES_SHARED(libmysql ${LIBS_TO_MERGE}
+    EXPORTS
+    ${CLIENT_API_FUNCTIONS}
+    ${CLIENT_API_FUNCTIONS_UNDOCUMENTED}
+    ${CLIENT_API_NONBLOCKING_FUNCTIONS}
+    COMPONENT SharedLibraries
+    LINK_LIBRARIES ${LIBS_TO_LINK}
+    ${UNIX_OUTPUT_NAME}
+    ${UNIX_SOVERSION}
+    ${UNIX_VERSION}
+    SKIP_INSTALL
+    )
+ELSE(WITHOUT_CLIENTLIBS)
+  MERGE_LIBRARIES_SHARED(libmysql ${LIBS_TO_MERGE}
+    EXPORTS
+    ${CLIENT_API_FUNCTIONS}
+    ${CLIENT_API_FUNCTIONS_UNDOCUMENTED}
+    ${CLIENT_API_NONBLOCKING_FUNCTIONS}
+    COMPONENT SharedLibraries
+    LINK_LIBRARIES ${LIBS_TO_LINK}
+    ${UNIX_OUTPUT_NAME}
+    ${UNIX_SOVERSION}
+    ${UNIX_VERSION}
+    )
+ENDIF(WITHOUT_CLIENTLIBS)
 
 # Downgrade warning for strncat in my_crypt_genhash.
 IF((WITH_LTO OR CMAKE_COMPILER_FLAG_WITH_LTO) AND MY_COMPILER_IS_GNU)
