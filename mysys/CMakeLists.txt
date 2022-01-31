@@ -197,6 +197,7 @@ ADD_CONVENIENCE_LIBRARY(mysys ${MYSYS_SOURCES}
   ${LIBEXECINFO}
   ${LIBUNWIND_LDFLAGS}
   ${SSL_LIBRARIES}
+  ${LIBATOMIC}
   )
 
 # For targets that link with mysys, and are independent of other targets.
