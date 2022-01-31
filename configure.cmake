@@ -105,6 +105,25 @@ IF(UNIX)
   MY_SEARCH_LIBS(timer_create rt LIBRT)
   MY_SEARCH_LIBS(backtrace execinfo LIBEXECINFO)
 
+  SET(ATOMIC_TEST_SOURCE "
+  int main()
+  {
+    char x=1;
+    short y=1;
+    int z=1;
+    long w = 1;
+    long long s = 1;
+    x = __atomic_add_fetch(&x, 1, __ATOMIC_SEQ_CST);
+    y = __atomic_add_fetch(&y, 1, __ATOMIC_SEQ_CST);
+    z = __atomic_add_fetch(&z, 1, __ATOMIC_SEQ_CST);
+    w = __atomic_add_fetch(&w, 1, __ATOMIC_SEQ_CST);
+    return (int)__atomic_load_n(&s, __ATOMIC_SEQ_CST);
+  }" )
+  CHECK_CXX_SOURCE_COMPILES("${ATOMIC_TEST_SOURCE}" ATOMICS_ARE_BUILTIN)
+  IF(NOT ATOMICS_ARE_BUILTIN)
+    MY_SEARCH_LIBS(atomic_thread_fence atomic LIBATOMIC)
+  ENDIF()
+
   LIST(APPEND CMAKE_REQUIRED_LIBRARIES
     ${LIBM} ${LIBNSL} ${LIBBIND} ${LIBSOCKET} ${LIBDL}
     ${CMAKE_THREAD_LIBS_INIT} ${LIBRT} ${LIBEXECINFO}
