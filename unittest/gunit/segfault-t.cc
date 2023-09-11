@@ -91,6 +91,7 @@ class FatalSignalDeathTest : public ::testing::Test {
       "information to find out";
 };
 
+#if defined(GTEST_HAS_DEATH_TEST)
 TEST_F(FatalSignalDeathTest, Abort) {
 #if defined(_WIN32)
   EXPECT_DEATH_IF_SUPPORTED(
@@ -100,7 +101,9 @@ TEST_F(FatalSignalDeathTest, Abort) {
       abort(), ContainsRangeOfOccurrences(1, 1, " UTC - mysqld got signal 6"));
 #endif
 }
+#endif
 
+#if defined(GTEST_HAS_DEATH_TEST)
 TEST_F(FatalSignalDeathTest, CrashOnMyAbort) {
   EXPECT_DEATH_IF_SUPPORTED(
       my_abort(), ContainsRangeOfOccurrences(1, 1, expected_backtrace_string));
@@ -110,7 +113,9 @@ TEST_F(FatalSignalDeathTest, CrashOnTerminate) {
       std::terminate(),
       ContainsRangeOfOccurrences(1, 1, expected_backtrace_string));
 }
+#endif
 
+#if defined(GTEST_HAS_DEATH_TEST)
 static void test_parallel_crash() {
   thread::Notification go;
   thread::Notification ready[10];
@@ -134,7 +139,9 @@ static void test_parallel_crash() {
     delete t[i];
   }
 }
+#endif
 
+#if defined(GTEST_HAS_DEATH_TEST)
 TEST_F(FatalSignalDeathTest, CrashOnParallelAbort) {
   contains_cached_result = false;
   for (size_t count = 0; count < 1000 && !contains_cached_result; ++count) {
@@ -144,6 +151,7 @@ TEST_F(FatalSignalDeathTest, CrashOnParallelAbort) {
   }
   EXPECT_TRUE(contains_cached_result);
 }
+#endif
 
 // Verifies that my_safe_utoa behaves like sprintf(_, "%llu", _)
 TEST(PrintUtilities, Utoa) {
