@@ -88,6 +88,7 @@ class FatalSignalDeathTest : public ::testing::Test {
       "information to find out";
 };
 
+#if !defined(GTEST_NO_DEATH_TEST)
 TEST_F(FatalSignalDeathTest, Abort) {
 #if defined(_WIN32)
   EXPECT_DEATH_IF_SUPPORTED(
@@ -97,7 +98,9 @@ TEST_F(FatalSignalDeathTest, Abort) {
       abort(), ContainsRangeOfOccurrences(1, 1, " UTC - mysqld got signal 6"));
 #endif
 }
+#endif
 
+#if !defined(GTEST_NO_DEATH_TEST)
 TEST_F(FatalSignalDeathTest, CrashOnMyAbort) {
   EXPECT_DEATH_IF_SUPPORTED(
       my_abort(), ContainsRangeOfOccurrences(1, 1, expected_backtrace_string));
@@ -107,6 +110,7 @@ TEST_F(FatalSignalDeathTest, CrashOnTerminate) {
       std::terminate(),
       ContainsRangeOfOccurrences(1, 1, expected_backtrace_string));
 }
+#endif
 
 static void test_parallel_crash() {
   thread::Notification go;
@@ -132,6 +136,7 @@ static void test_parallel_crash() {
   }
 }
 
+#if !defined(GTEST_NO_DEATH_TEST)
 TEST_F(FatalSignalDeathTest, CrashOnParallelAbort) {
   contains_cached_result = false;
   for (size_t count = 0; count < 1000 && !contains_cached_result; ++count) {
@@ -141,6 +146,7 @@ TEST_F(FatalSignalDeathTest, CrashOnParallelAbort) {
   }
   EXPECT_TRUE(contains_cached_result);
 }
+#endif
 
 TEST_F(FatalSignalDeathTest, Segfault) {
 #if defined(_WIN32)
