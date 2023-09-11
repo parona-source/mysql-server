@@ -129,6 +129,8 @@ SELECT prio,error_code,subsystem,data
 # MY-013884: Redo log has been resized. Depends on existing files.
 # MY-013908: Invalid systemd socket. Bit indeterministic.
 # MY-013930: systemd debug.
+# MY-011951: page_cleaner succeeded in setting coordinator priority.
+# MY-011952: page_cleaner didn't succeed in setting coordinator priority.
 SELECT prio,error_code,subsystem
   FROM performance_schema.error_log
  WHERE logged>=@startup
@@ -140,7 +142,8 @@ SELECT prio,error_code,subsystem
                          "MY-013602", "MY-010069", "MY-013595", "MY-010108",
                          "MY-012363", "MY-011953", "MY-013623", "MY-013711",
                          "MY-013880", "MY-013881", "MY-013882", "MY-013883",
-                         "MY-013884", "MY-013908", "MY-013930")
+                         "MY-013884", "MY-013908", "MY-013930", "MY-011951",
+                         "MY-011952")
  ORDER BY logged, error_code;
 
 --echo
