@@ -316,10 +316,6 @@ class GTEST_API_ KilledBySignal {
   if (::testing::internal::AlwaysTrue()) {                                     \
     GTEST_LOG_(WARNING) << "Death tests are not supported on this platform.\n" \
                         << "Statement '" #statement "' cannot be verified.";   \
-  } else if (::testing::internal::AlwaysFalse()) {                             \
-    ::testing::internal::RE::PartialMatch(".*", (regex));                      \
-    GTEST_SUPPRESS_UNREACHABLE_CODE_WARNING_BELOW_(statement);                 \
-    terminator;                                                                \
   } else                                                                       \
     ::testing::Message()
 
@@ -338,6 +334,15 @@ class GTEST_API_ KilledBySignal {
   GTEST_UNSUPPORTED_DEATH_TEST(statement, regex, )
 #define ASSERT_DEATH_IF_SUPPORTED(statement, regex) \
   GTEST_UNSUPPORTED_DEATH_TEST(statement, regex, return)
+
+#define EXPECT_DEATH(statement, regex) \
+  GTEST_EXECUTE_STATEMENT_(statement, regex)
+
+#define ASSERT_DEATH(statement, regex) \
+  GTEST_EXECUTE_STATEMENT_(statement, regex)
+
+#define EXPECT_DEBUG_DEATH(statement, regex) EXPECT_DEATH(statement, regex)
+#define ASSERT_DEBUG_DEATH(statement, regex) ASSERT_DEATH(statement, regex)
 #endif
 
 }  // namespace testing
