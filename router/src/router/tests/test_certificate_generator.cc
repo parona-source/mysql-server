@@ -120,7 +120,7 @@ TEST_F(CertificateGeneratorTest, test_generate_router_cert) {
   EXPECT_EQ(X509_STORE_CTX_get_error(ctx.get()), 0);
 }
 
-#ifndef NDEBUG
+#if !defined(NDEBUG) && defined(GTEST_HAS_DEATH_TEST)
 TEST_F(CertificateGeneratorTest, death_test_generate_cert_wrong_serial) {
   const auto key_res = m_cert_gen.generate_evp_pkey();
   ASSERT_TRUE(key_res) << key_res.error();
