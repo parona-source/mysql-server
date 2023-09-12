@@ -64,7 +64,7 @@ $i = 1;
 # Invoking mysql_secure_installation.
 initial_commands();
 if (-e $ENV{MASTER_MYSOCK} ){
-   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} -S $ENV{MASTER_MYSOCK }");
+   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} --no-defaults -S $ENV{MASTER_MYSOCK }");
 }
 $texp[$i]->expect(15,' -re ',[ 'any other key for No' => sub {
 $texp[$i]->send("n\n");}]);
@@ -78,7 +78,7 @@ $i++;
 
 initial_commands();
 if (-e $ENV{MASTER_MYSOCK} ){
-   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} -S $ENV{MASTER_MYSOCK } -p");
+   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} --no-defaults -S $ENV{MASTER_MYSOCK } -p");
 }
 $texp[$i]->expect(15,' -re ',[ 'password' => sub {
 $texp[$i]->send("1\n");}]);
@@ -95,7 +95,7 @@ $i++;
 # Invoking mysql_secure_installation and installing the validate_password plugin.
 initial_commands();
 if (-e $ENV{MASTER_MYSOCK} ){
-   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} -S $ENV{MASTER_MYSOCK } -p");
+   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} --no-defaults -S $ENV{MASTER_MYSOCK } -p");
 }
 $texp[$i]->expect(15,' -re ',[ 'password' => sub {
 $texp[$i]->send("null\n");}]);
@@ -115,7 +115,7 @@ $i++;
 
 initial_commands();
 if (-e $ENV{MASTER_MYSOCK} ){
-   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} -S $ENV{MASTER_MYSOCK } -p");
+   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} --no-defaults -S $ENV{MASTER_MYSOCK } -p");
 }
 $texp[$i]->expect(15,' -re ',[ 'password' => sub {
 $texp[$i]->send("passPASS1234!@#\n");}]);
@@ -136,7 +136,7 @@ $i++;
 
 initial_commands();
 if (-e $ENV{MASTER_MYSOCK} ){
-   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} -S $ENV{MASTER_MYSOCK } -D -p");
+   $texp[$i]->spawn("$ENV{MYSQL_SECURE_INSTALLATION} --no-defaults -S $ENV{MASTER_MYSOCK } -D -p");
 }
 $texp[$i]->expect(15,' -re ',[ 'password' => sub {
 $texp[$i]->send("secureINSTALL09#)(\n");}]);
