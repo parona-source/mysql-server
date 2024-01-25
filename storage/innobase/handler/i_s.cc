@@ -217,13 +217,7 @@ const ulint MAX_BUF_INFO_CACHED = 10000;
     return 1;        \
   }
 
-#if !defined __STRICT_ANSI__ && defined __GNUC__ && !defined __clang__
-#define STRUCT_FLD(name, value) \
-  name:                         \
-  value
-#else
 #define STRUCT_FLD(name, value) value
-#endif
 
 /* Don't use a static const variable here, as some C++ compilers (notably
 HPUX aCC: HP ANSI C++ B3910B A.03.65) can't handle it. */
