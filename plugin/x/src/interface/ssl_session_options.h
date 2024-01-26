@@ -26,6 +26,7 @@
 #ifndef PLUGIN_X_SRC_INTERFACE_SSL_SESSION_OPTIONS_H_
 #define PLUGIN_X_SRC_INTERFACE_SSL_SESSION_OPTIONS_H_
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
